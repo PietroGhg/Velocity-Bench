@@ -35,8 +35,8 @@
 
 
 project('lc0', 'cpp',
-        #default_options : ['cpp_std=c++17', 'b_ndebug=if-release', 'warning_level=3', 'b_lto=true', 'b_vscrt=mt', ],
-        default_options : ['cpp_std=c++20', 'b_ndebug=false'],
+        default_options : ['cpp_std=c++17', 'b_ndebug=if-release', 'warning_level=3', 'b_lto=true', 'b_vscrt=mt', ],
+        #default_options : ['cpp_std=c++20', 'b_ndebug=false'],
         meson_version: '>=0.52')
 
 
@@ -301,6 +301,13 @@ if get_option('USE_SYCL')
         deps += [hip_blas, hip_dart]
         deps += cc.find_library('sycl', required: true)
         mlink_args+= ['-fsycl', '-fsycl-targets=' + sm_level]      
+      elif (get_option('USE_NATIVE_CPU') == true)
+        message('Building SYCL for Native CPU backend')
+        add_project_arguments('-fsycl-targets=native_cpu', language : 'cpp')
+        add_project_arguments('-I/opt/intel/oneapi/mkl/2023.1.0/include', language : 'cpp')
+        add_project_arguments('-DINLINE', language : 'cpp')
+        deps += cc.find_library('sycl', required: true)
+        mlink_args+= ['-fsycl', '-fsycl-targets=native_cpu']
       else
         sm_level = 'nvidia_gpu_sm_' +  get_option('USE_SM')
         message('Building SYCL for the NVIDIA backend')

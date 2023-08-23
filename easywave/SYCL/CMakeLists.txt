@@ -22,6 +22,7 @@ option(GPU_AOT                 "Build AOT for Intel GPU"                        
 option(USE_INTEL_CPU           "Build AOT for Intel CPU"                        OFF)
 option(USE_NVIDIA_BACKEND      "Build for NVIDIA backend"                       OFF)
 option(USE_AMD_BACKEND         "Build for AMD     backend"                      OFF)
+option(USE_NATIVE_CPU          "Build for Native CPU"                           OFF)
 option(SHOW_GRID               "Show intermediate grid size during propagation" OFF)
 option(ENABLE_GPU_TIMINGS      "Show GPU timings at end of execution"           OFF)
 
@@ -120,9 +121,12 @@ elseif(USE_AMD_BACKEND)
     message(STATUS "Enabling AMD backend for ${USE_AMD_ARCH} AMD architecture")
     set(CMAKE_CXX_FLAGS "${AMD_GPU_CXX_FLAGS}")
     string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMD_ARCH}  ")
+elseif(USE_NATIVE_CPU)
+    string(APPEND CMAKE_CXX_FLAGS " -fsycl -fsycl-targets=native_cpu ")
 else()
     message(STATUS "Enabling INTEL backend")
     set(CMAKE_CXX_FLAGS "${INTEL_GPU_CXX_FLAGS}") # Default flags for Intel backend
+    string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMDHIP_BACKEND}  ")
 endif()
 
 # Output the compiler flags that were constructed for visual inspection

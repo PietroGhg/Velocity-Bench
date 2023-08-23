@@ -33,6 +33,7 @@ option(USE_AMDHIP_BACKEND "Build for AMD HIP backend" OFF)
 option(USE_SM "Specifies which streaming multiprocessor architecture to use")
 option(OpenCV_DIR "Path to OpenCV_DIR")
 option(DEVICE_TIMER "Build using Device Timer" OFF)
+option(USE_NATIVE_CPU          "Build for Native CPU"         OFF)
 
 # Find OpenCV, you may need to set OpenCV_DIR variable
 # to the absolute path to the directory containing OpenCVConfig.cmake file
@@ -141,6 +142,8 @@ elseif(USE_AMDHIP_BACKEND)
     message(STATUS "Enabling AMD HIP backend for ${USE_AMDHIP_BACKEND} AMD architecture")
     set(CMAKE_CXX_FLAGS "${AMD_GPU_CXX_FLAGS}")
     string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMDHIP_BACKEND}  ")
+elseif(USE_NATIVE_CPU)
+    string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu ")
 else()
     message(STATUS "Enabling INTEL backend")
     set(CMAKE_CXX_FLAGS "${INTEL_GPU_CXX_FLAGS}")  

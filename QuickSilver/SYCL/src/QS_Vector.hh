@@ -245,8 +245,8 @@ private:
    T *_data;
    int _capacity;
    int _size;
-   bool _isOpen;
    MemoryControl::AllocationPolicy _memPolicy;
+   bool _isOpen;
 };
 
 #endif

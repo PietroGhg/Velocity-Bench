@@ -123,6 +123,11 @@ option('USE_L0_BACKEND',
        value: false,
        description: 'Enable SYCL L0 backend')
 
+option('USE_NATIVE_CPU',
+       type: 'boolean',
+       value: false,
+       description: 'Enable SYCL Native CPU backend')
+
 option('USE_SM',
        type: 'string',
        value: '61',

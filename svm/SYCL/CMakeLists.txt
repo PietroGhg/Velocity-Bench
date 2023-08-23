@@ -61,6 +61,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)        # Use -std, not -gnu
 option(GPU_AOT                 "Build AOT for Intel GPU"      OFF)
 option(USE_NVIDIA_BACKEND      "Build for NVIDIA backend"     OFF)
 option(USE_AMDHIP_BACKEND      "Build for AMD HIP backend"    OFF)
+option(USE_NATIVE_CPU          "Build for Native CPU"         OFF)
 
 set(SOURCES
     cuSVM/cuSVMSolver.dp.cpp
@@ -105,6 +106,7 @@ endif()
 
 # JIT compilation
 
+option(MKLROOT "MKL Root" "")
 add_executable(${PROJECT_NAME} ${SOURCES})
 if(USE_NVIDIA_BACKEND)
     target_link_libraries(${PROJECT_NAME} -lcublas -lcudart -lcuda)
@@ -136,6 +138,8 @@ elseif(USE_AMD_BACKEND)
         set(CMAKE_CXX_FLAGS "${AMD_GPU_CXX_FLAGS}") # Default flags for AMD backend (gfx908 for MI100)
     endif()
     string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amd_gpu_gfx${USE_AMD_ARCH}")
+elseif (USE_NATIVE_CPU)
+    string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu ")
 endif()
 
 # Output the compiler flags that were constructed for visual inspection

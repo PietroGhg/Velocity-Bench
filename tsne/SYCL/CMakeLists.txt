@@ -41,6 +41,7 @@ option(GPU_AOT                 "Build AOT for Intel GPU"      OFF)
 option(USE_NVIDIA_BACKEND      "Build for NVIDIA backend"     OFF)
 option(USE_AMDHIP_BACKEND      "Build for AMD HIP backend"    OFF)
 option(USE_SM                  "Build for specific SM"        OFF)
+option(USE_NATIVE_CPU          "Build for Native CPU"         OFF)
 
 if(ENABLE_KERNEL_PROFILING)
     message("-- Enabling kernel profiling")
@@ -104,6 +105,8 @@ elseif(USE_AMDHIP_BACKEND)
     set(CMAKE_CXX_FLAGS "${AMD_GPU_CXX_FLAGS}")
     string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMDHIP_BACKEND} ")
     string(APPEND CMAKE_CXX_FLAGS " -DUSE_AMDHIP_BACKEND")
+elseif (USE_NATIVE_CPU)
+    string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu ")
 else()
     # JIT case
     message(STATUS "Enabling INTEL backend")
@@ -145,7 +148,7 @@ set(SOURCES
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/
     ${CMAKE_SOURCE_DIR}/src/include
-    /nfs/pdx/home/mgrabban/oneDPL/include
+    $ENV{ONEDPLROOT}/include
     /nfs/pdx/home/mgrabban/oneTBB/include
 )
 

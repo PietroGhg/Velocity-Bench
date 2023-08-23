@@ -28,6 +28,7 @@ endif ()
 option(USE_DPC                  "Use DPC++ technology"                     OFF)
 option(USE_CUDA                 "Use CUDA"                                 OFF)
 option(USE_HIP                  "Use AMD"                                  OFF)
+option(USE_NATIVE_CPU           "Build for Native CPU"                     OFF)
 
 option(GPU_AOT                  "Build AOT for Intel GPU"                   OFF)
 option(USE_NVIDIA_BACKEND       "Use DPC++ technology with NVIDIA backend"  OFF)
@@ -88,7 +89,7 @@ if(ENABLE_GPU_TIMINGS)
     add_compile_options(-DENABLE_GPU_TIMINGS)
 endif()
 
-if (NOT USE_DPC AND NOT USE_CUDA AND NOT USE_HIP)
+if (NOT USE_DPC AND NOT USE_CUDA AND NOT USE_HIP AND NOT USE_NATIVE_CPU)
     message(FATAL_ERROR "Please specify a technology using the config.sh script")
 elseif (USE_DPC AND USE_CUDA AND USE_HIP OR USE_DPC AND USE_CUDA OR USE_CUDA AND USE_HIP)
     message(FATAL_ERROR "Please specify only one technology using the config.sh script")
@@ -242,6 +243,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/Thoth/include)
 # TECHNOLOGY
 if (USE_DPC)
     add_definitions(-DUSING_DPCPP)
+    if (USE_NATIVE_CPU)
+        string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu ")
+    endif()
 elseif (USE_CUDA)
     add_definitions(-DUSING_CUDA -DOPERATIONS_LIB_BACKEND_ONEAPI_BACKEND_HPP) ### Adding -DOPS_LIB_BACKEND_API prevents CUDA including the oneAPI backend hpp
     find_package(CUDA REQUIRED) ### This needs to be here for some reason, not above
