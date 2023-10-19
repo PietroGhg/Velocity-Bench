@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     memset(job, 0, 128);
 	
     // Initialise MPI environment
-    MPI::Init(argc, argv);
+    MPI_Init(&argc, &argv);
     
     if (argc < 2)
     {
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     strncat(job, argv[1], 127);
     // strcpy(job, argv[1]);
     
-    MPI::Get_processor_name(proc_name, length);
+    MPI_Get_processor_name(proc_name, &length);
 
     cout << "\n Rank : " << rank << " on processor : " << proc_name;
     cout << "\n Rank : " << rank << " Job file : " << job;

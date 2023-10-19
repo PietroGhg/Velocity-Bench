@@ -25,8 +25,7 @@ elif [ $1 == "SeisAcoMod2D" ]; then
   cd $1/SYCL
 elif [ $1 == "svm" ]; then
   cd $1/SYCL
-  export MKLROOT=/opt/intel/oneapi/mkl/2023.1.0
-  EXTRA_FLAGS="-DMKLROOT=/opt/intel/oneapi/mkl "
+  EXTRA_FLAGS="-DMKLROOT=/opt/intel/oneapi/mkl/2023.2.0 "
 elif [ $1 == "tsne" ]; then
   cd $1/SYCL
   export ONEDPLROOT=/home/pietro/dpcpp_host_device/oneDPL

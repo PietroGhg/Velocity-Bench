@@ -165,7 +165,7 @@ elseif(USE_AMDHIP_BACKEND)
     set(CMAKE_CXX_FLAGS "${AMD_GPU_CXX_FLAGS}")
     string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMDHIP_BACKEND}  ")
 elseif(USE_NATIVE_CPU)
-    string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu ")
+  string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu -DHAVE_SYCL=1 -mllvm -inline-threshold=1000")
 else()
     # JIT case
     message(STATUS "Enabling INTEL backend")
