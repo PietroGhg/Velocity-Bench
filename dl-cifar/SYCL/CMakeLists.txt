@@ -32,6 +32,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)        # Use -std, not -gnu
 option(GPU_AOT                 "Build AOT for Intel GPU"      OFF)
 option(USE_NVIDIA_BACKEND      "Build for NVIDIA backend"     OFF)
 option(USE_AMDHIP_BACKEND      "Build for AMD HIP backend"    OFF)
+option(USE_NATIVE_CPU           "Build for SYCL Native CPU"    OFF)
 option(DEVICE_TIMER            "Build using Device Timer" OFF)
 
 set(DEF_INTEL_WL_CXX_FLAGS  " -DMKL_ILP64 ")
@@ -191,6 +192,10 @@ elseif(USE_AMD_BACKEND)
     message(STATUS "Enabling AMD HIP backend for ${USE_AMD_ARCH} AMD architecture")
     set(CMAKE_CXX_FLAGS "${AMD_GPU_CXX_FLAGS}")
     string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMD_ARCH}  ")
+elseif(USE_NATIVE_CPU)
+    message(STATUS "Enabling Native CPU backend")
+    set(CMAKE_CXX_FLAGS "${INTEL_GPU_CXX_FLAGS}")
+    string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=native_cpu ")
 else()
     # JIT case
     message(STATUS "Enabling INTEL backend")

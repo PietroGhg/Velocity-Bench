@@ -1,13 +1,17 @@
-source ~/dpcpp_host_device/setvars.sh
+OPENCV_INSTALL_DIR=/home/pietro/native_cpu/opencv-4.x/build
+ETHASH_INSTALL_DIR=/home/pietro/native_cpu/deps/ethash-0.4.3/install
+JSONCPP_INSTALL_DIR=/home/pietro/native_cpu/deps/jsoncpp-1.9.5/install
+OPENSSL_INSTALL_DIR=/home/pietro/native_cpu/deps/openssl-OpenSSL_1_1_1f/install
+
 if [ $1 == "cudaSift" ] || [ $1 == "sobel_filter" ]; then 
-  EXTRA_ARGS=-DOpenCV_DIR=~/opencv/build; 
+  EXTRA_ARGS=-DOpenCV_DIR=$OPENCV_INSTALL_DIR; 
   cd $1/SYCL
 elif [ $1 == "ethminer" ]; then 
   cd $1; 
-  export Boost_DIR=~/dpcpp_host_device/deps/boost_1_73_0/install
-  export ethash_DIR=~/dpcpp_host_device/deps/ethash-0.4.3/install
-  export jsoncpp_DIR=~/dpcpp_host_device/deps/jsoncpp-1.9.5/install
-  export OPENSSL_ROOT_DIR=~/dpcpp_host_device/deps/openssl-OpenSSL_1_1_1f/install
+  export Boost_DIR=$BOOST_INSTALL_DIR
+  export ethash_DIR=$ETHASH_INSTALL_DIR
+  export jsoncpp_DIR=$JSONCPP_INSTALL_DIR
+  export OPENSSL_ROOT_DIR=$OPENSSL_INSTALL_DIR
   EXTRA_ARGS="-DETHASHCUDA=OFF -DETHASHSYCL=ON -DUSE_SYS_OPENCL=OFF  -DBINKERN=OFF -DETHASHCL=OFF"
 elif [ $1 == "hplinpack" ]; then
   cd $1/dpcpp/hpl-2.3
@@ -16,7 +20,7 @@ elif [ $1 == "hplinpack" ]; then
   exit
 elif [ $1 == "reverse_time_migration" ]; then 
   cd $1;
-  EXTRA_ARGS="-DCMAKE_BUILD_TYPE=RELEASE  -DUSE_DPC=ON -DUSE_OpenCV=ON  -DDATA_PATH=data -DWRITE_PATH=results  -DOpenCV_DIR=~/opencv/build "
+  EXTRA_ARGS="-DCMAKE_BUILD_TYPE=RELEASE  -DUSE_DPC=ON -DUSE_OpenCV=ON  -DDATA_PATH=data -DWRITE_PATH=results  -DOpenCV_DIR=$OPENCV_INSTALL_DIR"
 elif [ $1 == "SeisAcoMod2D" ]; then
   export OMPI_CXX=clang++
   export OMPI_CC=clang
