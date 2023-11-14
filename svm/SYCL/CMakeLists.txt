@@ -106,19 +106,19 @@ endif()
 
 # JIT compilation
 
-option(MKLROOT "MKL Root" "")
 add_executable(${PROJECT_NAME} ${SOURCES})
+option(oneMKLROOT "oneMKL install folder")
 if(USE_NVIDIA_BACKEND)
     target_link_libraries(${PROJECT_NAME} -lcublas -lcudart -lcuda)
 elseif(USE_AMD_BACKEND)
     target_link_libraries(${PROJECT_NAME} -lhipblas)
 else()
     message(STATUS "Enabling INTEL backend")
-    find_package(MKL REQUIRED CONFIG HINTS ${MKLROOT})
-    message(STATUS "Found oneMKL: ${MKL_DIR}")
-    message(STATUS "${MKL_IMPORTED_TARGETS}")
-    #todo remove hardcoded path
-    target_link_libraries(${PROJECT_NAME} PRIVATE $<LINK_ONLY:MKL::MKL> /opt/intel/oneapi/mkl/2023.2.0/lib/intel64/libmkl_sycl.so.3)
+    message(STATUS "oneMKL hint: ${oneMKLROOT}")
+    find_package(oneMKL REQUIRED CONFIG HINTS ${oneMKLROOT})
+    message(STATUS "Found oneMKL: ${oneMKL_DIR}")
+    target_link_libraries(${PROJECT_NAME} PRIVATE MKL::onemkl)
+
 endif()
 
 if(GPU_AOT)
