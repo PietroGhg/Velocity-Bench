@@ -65,3 +65,4 @@
 # which matches 'target' in any sub folder
 *.syntastic_cpp_config
 **/build_nativecpu
+dl-mnist/datasets
