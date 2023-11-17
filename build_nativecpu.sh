@@ -3,6 +3,8 @@ ETHASH_INSTALL_DIR=/home/pietro/native_cpu/deps/ethash-0.4.3/install
 JSONCPP_INSTALL_DIR=/home/pietro/native_cpu/deps/jsoncpp-1.9.5/install
 OPENSSL_INSTALL_DIR=/home/pietro/native_cpu/deps/openssl-OpenSSL_1_1_1f/install
 ONEMKL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneMKL/build/install
+ONEDPL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneDPL
+DNNL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneDNN/build/install
 
 source ~/native_cpu/setvars.sh
 if [ $1 == "cudaSift" ] || [ $1 == "sobel_filter" ]; then 
@@ -34,11 +36,15 @@ elif [ $1 == "svm" ]; then
   EXTRA_ARGS="-DoneMKLROOT=$ONEMKL_INSTALL_DIR"
 elif [ $1 == "tsne" ]; then
   cd $1/SYCL
-  export ONEDPLROOT=/home/pietro/dpcpp_host_device/oneDPL
+  EXTRA_ARGS="-DONEDPLROOT=$ONEDPL_INSTALL_DIR"
 elif [ $1 == "dl-mnist" ]; then
   cd $1/SYCL
-  export DNNLROOT=/opt/intel/oneapi/dnnl/2023.2.0/cpu_dpcpp_gpu_dpcpp
+  export DNNLROOT=$DNNL_INSTALL_DIR
+elif [ $1 == "lc0" ]; then
+  cd $1
+  ./buildSycl.sh -DUSE_NATIVE_CPU=true
+  exit
 else cd $1/SYCL; fi
 echo running cmake -B build_nativecpu -S . -GNinja -DUSE_NATIVE_CPU=On $EXTRA_ARGS
-cmake -B build_nativecpu -S . -GNinja -DUSE_NATIVE_CPU=On $EXTRA_ARGS
+cmake -B build_nativecpu -S . -GNinja -DUSE_NATIVE_CPU=On $EXTRA_ARGS 
 cmake --build build_nativecpu 
