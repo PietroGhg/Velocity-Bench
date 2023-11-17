@@ -1104,7 +1104,8 @@ double attack(
                 sycl::nd_range<1>(in_range, wg_size),
                 [=](sycl::nd_item<1> item)
             #if !defined(USE_NVIDIA_BACKEND) && !defined(USE_AMDHIP_BACKEND)
-                [[intel::reqd_sub_group_size(16)]]
+                // Todo: support reqd_sub_group_size on native cpu
+                //[[intel::reqd_sub_group_size(16)]]
             #endif
                 {
                     decrypt_vmk_with_mac(
