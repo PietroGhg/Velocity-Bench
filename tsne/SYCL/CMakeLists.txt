@@ -145,10 +145,11 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/exe/main.dp.cpp
 )
 
+option(ONEDPLROOT "OneDPL install folder" "")
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/
     ${CMAKE_SOURCE_DIR}/src/include
-    $ENV{ONEDPLROOT}/include
+    ${ONEDPLROOT}/include
     /nfs/pdx/home/mgrabban/oneTBB/include
 )
 

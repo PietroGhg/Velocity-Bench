@@ -60,7 +60,7 @@ namespace dl_infra {
         #ifdef DNNL_WITH_SYCL
             bool is_gpu_sycl = (DNNL_GPU_RUNTIME == DNNL_RUNTIME_SYCL
                     && eng.get_kind() == dnnl::engine::kind::gpu);
-            if (is_gpu_sycl) {
+            if (is_gpu_sycl || true) {
                 auto mkind = dnnl::sycl_interop::get_memory_kind(mem);
                 if (mkind == dnnl::sycl_interop::memory_kind::buffer) {
                     //cout << "Using buffer for copy" << std::endl;
