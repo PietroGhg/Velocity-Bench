@@ -304,10 +304,11 @@ if get_option('USE_SYCL')
       elif (get_option('USE_NATIVE_CPU') == true)
         message('Building SYCL for Native CPU backend')
         add_project_arguments('-fsycl-targets=native_cpu', language : 'cpp')
-        add_project_arguments('-I/opt/intel/oneapi/mkl/2023.1.0/include', language : 'cpp')
+        add_project_arguments('-I/home/pietro/native_cpu/deps/oneMKL/build/install/include', language : 'cpp')
         add_project_arguments('-DINLINE', language : 'cpp')
+        add_project_arguments('-fno-lto', language: 'cpp')
         deps += cc.find_library('sycl', required: true)
-        mlink_args+= ['-fsycl', '-fsycl-targets=native_cpu']
+        mlink_args+= ['-fsycl', '-fsycl-targets=native_cpu', '-fno-lto']
       else
         sm_level = 'nvidia_gpu_sm_' +  get_option('USE_SM')
         message('Building SYCL for the NVIDIA backend')
