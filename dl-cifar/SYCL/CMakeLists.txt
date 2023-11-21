@@ -133,7 +133,7 @@ endif()
 include_directories(${CMAKE_SOURCE_DIR}
                     ${CMAKE_SOURCE_DIR}/../common
                     ${CMAKE_SOURCE_DIR}/../../infrastructure
-                    #${DNNLROOT}/include
+                    ${DNNLROOT}/include
                     ${CUDA_INCLUDE_DIRS}
                     ${CUDA_TOOLKIT_INCLUDE}
 
@@ -162,6 +162,7 @@ if(DEVICE_TIMER)
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+option(MKLROOT "oneMKL root")
 if(USE_NVIDIA_BACKEND)
     target_link_libraries(${PROJECT_NAME} -lcublas -lcudart -lcuda -lcudnn)
 elseif(USE_AMD_BACKEND)
@@ -169,7 +170,14 @@ elseif(USE_AMD_BACKEND)
 else()
     message(STATUS "Enabling INTEL backend")
     link_directories(${MKLROOT}/lib/intel64)
-    target_link_libraries(${PROJECT_NAME} dnnl mkl_sycl mkl_intel_ilp64 mkl_tbb_thread mkl_core pthread dl m)
+    target_link_directories(${PROJECT_NAME} PRIVATE ${DNNLROOT}/lib)
+    if(USE_NATIVE_CPU)
+      target_link_directories(${PROJECT_NAME} PRIVATE ${MKLROOT}/lib)
+      target_link_libraries(${PROJECT_NAME} dnnl onemkl pthread dl m)
+    else()
+      target_link_libraries(${PROJECT_NAME} dnnl mkl_sycl mkl_intel_ilp64 mkl_tbb_thread mkl_core pthread dl m)
+    endif()
+    target_include_directories(${PROJECT_NAME} PRIVATE ${MKLROOT}/include)
 endif()
 
 # JIT compilation 

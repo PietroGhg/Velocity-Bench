@@ -66,4 +66,5 @@
 *.syntastic_cpp_config
 **/build_nativecpu
 dl-mnist/datasets
+dl-cifar/datasets
 SeisAcoMod2D/data
