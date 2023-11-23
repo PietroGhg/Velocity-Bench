@@ -245,6 +245,8 @@ if (USE_DPC)
     add_definitions(-DUSING_DPCPP)
     if (USE_NATIVE_CPU)
         string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu ")
+    else()
+        string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl ")
     endif()
 elseif (USE_CUDA)
     add_definitions(-DUSING_CUDA -DOPERATIONS_LIB_BACKEND_ONEAPI_BACKEND_HPP) ### Adding -DOPS_LIB_BACKEND_API prevents CUDA including the oneAPI backend hpp

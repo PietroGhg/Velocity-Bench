@@ -8,9 +8,9 @@
     "algorithm": "cpu",
     "device": "cpu",
     "cache-blocking": {
-      "block-x": 1,
+      "block-x": 2,
       "block-z": 8,
-      "block-y": 1,
+      "block-y": 2,
       "cor-block": 256
     },
     "window": {

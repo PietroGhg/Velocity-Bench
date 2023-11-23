@@ -74,7 +74,14 @@ elif [ "$1" == "dpcpp" ]; then #PVC
     RESULTS=`cat results/timing_results.txt | /bin/grep -wi MigrateShot -A4 | /bin/grep -wi Total`
     mv results results_${1}_${date}_complete
 elif [ "$1" == "dpcpp_cpu" ]; then #CPU
+  cd reverse_time_migration
     ONEAPI_DEVICE_SELECTOR=opencl:cpu ./bin/Engine -p workloads/bp_model/${COMPUTE_JSON_FILE}
+    RESULTS=`cat results/timing_results.txt | /bin/grep -wi MigrateShot -A4 | /bin/grep -wi Total`
+    mv results results_${1}_${date}_complete
+elif [ "$1" == "native_cpu" ]; then #CPU
+  cd  reverse_time_migration
+    ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ~/native_cpu/llvm/build/bin/sycl-ls || exit
+    ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ./bin/Engine -p workloads/bp_model/${COMPUTE_JSON_FILE}
     RESULTS=`cat results/timing_results.txt | /bin/grep -wi MigrateShot -A4 | /bin/grep -wi Total`
     mv results results_${1}_${date}_complete
 elif [ "$1" == "dpcpp_amd" ]; then #AMD GPU

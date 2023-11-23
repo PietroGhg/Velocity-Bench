@@ -18,13 +18,16 @@ elif [ $1 == "ethminer" ]; then
   export OPENSSL_ROOT_DIR=$OPENSSL_INSTALL_DIR
   EXTRA_ARGS="-DETHASHCUDA=OFF -DETHASHSYCL=ON -DUSE_SYS_OPENCL=OFF  -DBINKERN=OFF -DETHASHCL=OFF"
 elif [ $1 == "hplinpack" ]; then
-  cd $1/dpcpp/hpl-2.3
-  export DNNLROOT=/opt/intel/oneapi/dnnl/2023.2.0/cpu_dpcpp_gpu_dpcpp
-  make arch=nativecpu -j8
+  cd $1/dpcpp/nativecpu
+  make
   exit
 elif [ $1 == "reverse_time_migration" ]; then 
   cd $1;
   EXTRA_ARGS="-DCMAKE_BUILD_TYPE=RELEASE  -DUSE_DPC=ON -DUSE_OpenCV=ON  -DDATA_PATH=data -DWRITE_PATH=results  -DOpenCV_DIR=$OPENCV_INSTALL_DIR"
+  cmake -B./bin $EXTRA_ARGS -H. -DCOMPRESSION=NO -DCOMPRESSION_PATH=.  -DUSE_NATIVE_CPU=On
+  cd bin
+  make VERBOSE=1 Engine -j16
+  exit
 elif [ $1 == "SeisAcoMod2D" ]; then
   export OMPI_CXX=clang++
   export OMPI_CC=clang
@@ -40,6 +43,10 @@ elif [ $1 == "tsne" ]; then
 elif [ $1 == "dl-mnist" ]; then
   cd $1/SYCL
   export DNNLROOT=$DNNL_INSTALL_DIR
+elif [ $1 == "dl-cifar" ]; then
+  cd $1/SYCL
+  export DNNLROOT=$DNNL_INSTALL_DIR
+  EXTRA_ARGS="-DMKLROOT=$ONEMKL_INSTALL_DIR"
 elif [ $1 == "lc0" ]; then
   cd $1
   ./buildSycl.sh -DUSE_NATIVE_CPU=true
