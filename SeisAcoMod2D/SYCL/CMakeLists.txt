@@ -33,7 +33,7 @@ set(DEF_INTEL_WL_CXX_FLAGS  " ")
 set(DEF_NVIDIA_WL_CXX_FLAGS " ")
 set(DEF_AMD_WL_CXX_FLAGS    " ")
 
-set(DEF_INTEL_GENERAL_CXX_FLAGS  " -cxx=icpx    -O2 -std=c++17 -fsycl -fopenmp ")
+set(DEF_INTEL_GENERAL_CXX_FLAGS  "   -O2 -std=c++17 -fsycl ")
 set(DEF_NVIDIA_GENERAL_CXX_FLAGS " -cxx=clang++ -O3 -std=c++17 -fsycl ")
 set(DEF_AMD_GENERAL_CXX_FLAGS    " -cxx=clang++ -O3 -std=c++17 -fsycl ")
 

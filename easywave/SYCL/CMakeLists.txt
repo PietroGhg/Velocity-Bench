@@ -126,7 +126,6 @@ elseif(USE_NATIVE_CPU)
 else()
     message(STATUS "Enabling INTEL backend")
     set(CMAKE_CXX_FLAGS "${INTEL_GPU_CXX_FLAGS}") # Default flags for Intel backend
-    string(APPEND CMAKE_CXX_FLAGS " -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=${USE_AMDHIP_BACKEND}  ")
 endif()
 
 # Output the compiler flags that were constructed for visual inspection
