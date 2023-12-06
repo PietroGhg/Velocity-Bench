@@ -5,6 +5,7 @@ OPENSSL_INSTALL_DIR=/home/pietro/native_cpu/deps/openssl-OpenSSL_1_1_1f/install
 ONEMKL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneMKL/build/install
 ONEDPL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneDPL
 DNNL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneDNN/build/install
+VANILLA_ONEMKL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneMKL/build_vanilla/install
 
 source ~/native_cpu/setvars.sh
 if [ $1 == "cudaSift" ]; then 
@@ -22,11 +23,11 @@ elif [ $1 == "hplinpack" ]; then
   exit
 elif [ $1 == "QuickSilver" ]; then
   export QS_DEVICE=CPU 
-  pushd QuickSilver/SYCL/build_vanilla
-  ONEAPI_DEVICE_SELECTOR=opencl:cpu ./qs -i ../../Examples/AllScattering/scatteringOnly.inp
-  popd 
   pushd QuickSilver/SYCL/build_nativecpu
   ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ./qs -i ../../Examples/AllScattering/scatteringOnly.inp
+  popd 
+  pushd QuickSilver/SYCL/build_vanilla
+  ONEAPI_DEVICE_SELECTOR=opencl:cpu ./qs -i ../../Examples/AllScattering/scatteringOnly.inp
   exit
 elif [ $1 == "reverse_time_migration" ]; then 
   cd  reverse_time_migration
@@ -63,8 +64,19 @@ elif [ $1 == "tsne" ]; then
   ONEAPI_DEVICE_SELECTOR=opencl:cpu ./tsne
   exit
 elif [ $1 == "dl-mnist" ]; then
+  pushd dl-mnist/SYCL/build_vanilla
+  ONEAPI_DEVICE_SELECTOR=opencl:cpu ./dl-mnist-sycl -conv_algo ONEDNN_AUTO
+  popd
+  pushd dl-mnist/SYCL/build_nativecpu
+  ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ./dl-mnist-sycl -conv_algo ONEDNN_AUTO
   exit
 elif [ $1 == "dl-cifar" ]; then
+  pushd dl-cifar/SYCL/build_nativecpu
+  LD_LIBRARY_PATH=$ONEMKL_INSTALL_DIR/lib:$LD_LIBRARY_PATH ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ./dl-cifar_sycl  -dl_nw_size_type WORKLOAD_DEFAULT_SIZE
+  exit
+  popd
+  pushd dl-cifar/SYCL/build_vanilla
+  LD_LIBRARY_PATH=$VANILLA_ONEMKL_INSTALL_DIR/lib:$LD_LIBRARY_PATH ONEAPI_DEVICE_SELECTOR=opencl:cpu ./dl-cifar_sycl  -dl_nw_size_type WORKLOAD_DEFAULT_SIZE
   exit
 elif [ $1 == "lc0" ]; then
   exit

@@ -3,6 +3,7 @@ ETHASH_INSTALL_DIR=/home/pietro/native_cpu/deps/ethash-0.4.3/install
 JSONCPP_INSTALL_DIR=/home/pietro/native_cpu/deps/jsoncpp-1.9.5/install
 OPENSSL_INSTALL_DIR=/home/pietro/native_cpu/deps/openssl-OpenSSL_1_1_1f/install
 ONEMKL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneMKL/build_vanilla/install
+ONEDNN_INSTALL_DIR=/home/pietro/native_cpu/deps/oneDNN/build_vanilla/install
 ONEDPL_INSTALL_DIR=/home/pietro/native_cpu/deps/oneDPL
 
 source ~/native_cpu/setvars.sh
@@ -43,10 +44,14 @@ elif [ $1 == "tsne" ]; then
   EXTRA_ARGS="-DONEDPLROOT=$ONEDPL_INSTALL_DIR"
 elif [ $1 == "dl-mnist" ]; then
   cd $1/SYCL
-  export DNNLROOT=/opt/intel/oneapi/dnnl/2023.2.0/cpu_dpcpp_gpu_dpcpp
+  EXTRA_ARGS="-DDNNLROOT=$ONEDNN_INSTALL_DIR"
+elif [ $1 == "dl-cifar" ]; then
+  cd $1/SYCL
+  EXTRA_ARGS="-DDNNLROOT=$ONEDNN_INSTALL_DIR -DMKLROOT=$ONEMKL_INSTALL_DIR -DMKLSINGLELIB=On"
 elif [ $1 == "easywave" ]; then
   cd $1/SYCL
 
 else cd $1/SYCL; fi
+echo cmake -B build_vanilla -S . -GNinja $EXTRA_ARGS 
 cmake -B build_vanilla -S . -GNinja $EXTRA_ARGS 
 cmake --build build_vanilla
