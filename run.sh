@@ -43,11 +43,13 @@ elif [ $1 == "reverse_time_migration" ]; then
   exit
 elif [ $1 == "SeisAcoMod2D" ]; then
   source /opt/intel/oneapi/setvars.sh
+  INPUT=twoLayer_model_5000x5000z_small.json
+  #INPUT=sigsbee2a_3201x1201z.json
   pushd SeisAcoMod2D/SYCL/build_vanilla
-  ONEAPI_DEVICE_SELECTOR=opencl:cpu mpiexec -n 2 ./SeisAcoMod2D ../../input/twoLayer_model_5000x5000z_small.json
+  ONEAPI_DEVICE_SELECTOR=opencl:cpu mpiexec -n 2 ./SeisAcoMod2D ../../input/$INPUT
   popd
   pushd SeisAcoMod2D/SYCL/build_nativecpu
-  ONEAPI_DEVICE_SELECTOR=native_cpu:cpu mpiexec -n 2 ./SeisAcoMod2D ../../input/twoLayer_model_5000x5000z_small.json
+  ONEAPI_DEVICE_SELECTOR=native_cpu:cpu mpiexec -n 2 ./SeisAcoMod2D ../../input/$INPUT
   exit
 elif [ $1 == "svm" ]; then
   pushd svm/SYCL/build_nativecpu

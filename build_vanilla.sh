@@ -31,10 +31,14 @@ elif [ $1 == "reverse_time_migration" ]; then
   make VERBOSE=1 Engine -j16
   exit
 elif [ $1 == "SeisAcoMod2D" ]; then
-  export OMPI_CXX=clang++
-  export OMPI_CC=clang
-  export CXX=mpic++
-  export CC=mpicc
+  # to use intel's mpi
+  source /opt/intel/oneapi/setvars.sh
+  export I_MPI_CXX=clang++
+  export CXX=mpicxx
+  # to use openmpi
+  #export CXX=mpic++
+  #export OMPI_CXX=clang++
+  #export OMPI_CC=clang
   cd $1/SYCL
 elif [ $1 == "svm" ]; then
   cd $1/SYCL
