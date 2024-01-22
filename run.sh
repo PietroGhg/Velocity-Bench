@@ -60,10 +60,10 @@ elif [ $1 == "svm" ]; then
   exit
 elif [ $1 == "tsne" ]; then
   pushd tsne/SYCL/build_nativecpu
-  ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ./tsne
+  ONEAPI_DEVICE_SELECTOR=native_cpu:cpu ./tsne  -n 10
   popd
   pushd tsne/SYCL/build_vanilla
-  ONEAPI_DEVICE_SELECTOR=opencl:cpu ./tsne
+  ONEAPI_DEVICE_SELECTOR=opencl:cpu ./tsne  -n 10
   exit
 elif [ $1 == "dl-mnist" ]; then
   pushd dl-mnist/SYCL/build_vanilla
