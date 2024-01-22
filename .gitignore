@@ -70,3 +70,4 @@ dl-cifar/datasets
 reverse_time_migration/data
 SeisAcoMod2D/data
 SeisAcoMod2D/output
+reverse_time_migration/results*
