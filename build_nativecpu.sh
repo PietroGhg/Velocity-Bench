@@ -1,4 +1,5 @@
 OPENCV_INSTALL_DIR=/home/pietro/native_cpu/opencv-4.x/build
+BOOST_INSTALL_DIR=/home/pietro/native_cpu/deps/boost_1_82_0/install
 ETHASH_INSTALL_DIR=/home/pietro/native_cpu/deps/ethash-0.4.3/install
 JSONCPP_INSTALL_DIR=/home/pietro/native_cpu/deps/jsoncpp-1.9.5/install
 OPENSSL_INSTALL_DIR=/home/pietro/native_cpu/deps/openssl-OpenSSL_1_1_1f/install

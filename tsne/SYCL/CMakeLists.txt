@@ -115,7 +115,9 @@ endif()
 
 message(STATUS "CXX Compilation flags set to: ${CMAKE_CXX_FLAGS}")
 
-if(GPU_AOT)
+option(USE_MKL "Use mkl" On)
+message(STATUS "USE MKL: ${USE_MKL}")
+if(GPU_AOT AND USE_MKL)
     set(MKL_LINK static)
     set(MKL_THREADING sequential)
     find_package(MKL CONFIG REQUIRED HINTS "$ENV{MKLROOT}/lib/cmake/mkl")
@@ -155,7 +157,7 @@ include_directories(
 
 add_executable(tsne ${SOURCES})
 
-if(GPU_AOT)
+if(GPU_AOT AND USE_MKL)
     target_compile_options(tsne PUBLIC $<TARGET_PROPERTY:MKL::MKL_DPCPP,INTERFACE_COMPILE_OPTIONS>)
     target_include_directories(tsne PUBLIC $<TARGET_PROPERTY:MKL::MKL_DPCPP,INTERFACE_INCLUDE_DIRECTORIES>)
     target_link_libraries(tsne PUBLIC $<LINK_ONLY:MKL::MKL_DPCPP>)
