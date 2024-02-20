@@ -62,7 +62,7 @@ if [ -n "${INSTALL_PREFIX}" ]
 then
   ${NINJA} install
 else
-  ${NINJA}
+  ${NINJA} --verbose
 fi
 
 popd

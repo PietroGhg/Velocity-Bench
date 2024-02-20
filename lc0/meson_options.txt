@@ -128,6 +128,11 @@ option('USE_NATIVE_CPU',
        value: false,
        description: 'Enable SYCL Native CPU backend')
 
+option('USE_JIT',
+       type: 'boolean',
+       value: false,
+       description: 'Enable SYCL SPIRV backend')
+
 option('USE_SM',
        type: 'string',
        value: '61',

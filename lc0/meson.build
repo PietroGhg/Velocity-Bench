@@ -307,7 +307,14 @@ if get_option('USE_SYCL')
         add_project_arguments('-I/home/pietro/native_cpu/deps/oneMKL/build/install/include', language : 'cpp')
         add_project_arguments('-DINLINE', language : 'cpp')
         add_project_arguments('-fno-lto', language: 'cpp')
-        deps += cc.find_library('sycl', required: true)
+        deps += cc.find_library('onemkl', required: true, dirs: '/home/pietro/native_cpu/deps/oneMKL/build/install/lib')   
+        mlink_args+= ['-fsycl', '-fsycl-targets=native_cpu', '-fno-lto','-mllvm','-sycl-native-cpu-vecz-width=2']
+      elif (get_option('USE_JIT') == true)
+        message('Building SYCL for SPIRV backend')
+        add_project_arguments('-I/home/pietro/native_cpu/deps/oneMKL/build_vanilla/install/include', language : 'cpp')
+        add_project_arguments('-DINLINE', language : 'cpp')
+        add_project_arguments('-fno-lto', language: 'cpp')
+        deps += cc.find_library('onemkl', required: true, dirs: '/home/pietro/native_cpu/deps/oneMKL/build_vanilla/install/lib')   
         mlink_args+= ['-fsycl', '-fsycl-targets=native_cpu', '-fno-lto']
       else
         sm_level = 'nvidia_gpu_sm_' +  get_option('USE_SM')
