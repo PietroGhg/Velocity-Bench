@@ -42,6 +42,7 @@ option(USE_NVIDIA_BACKEND      "Build for NVIDIA backend"     OFF)
 option(USE_AMDHIP_BACKEND      "Build for AMD HIP backend"    OFF)
 option(USE_SM                  "Build for specific SM"        OFF)
 option(USE_NATIVE_CPU          "Build for Native CPU"         OFF)
+option(USE_ADAPTIVECPP         "Build for specific SM"        OFF)
 
 if(ENABLE_KERNEL_PROFILING)
     message("-- Enabling kernel profiling")
@@ -55,6 +56,7 @@ set(DEF_AMD_WL_CXX_FLAGS    " ")
 set(DEF_INTEL_GENERAL_CXX_FLAGS  " -O2 -std=c++17 -fsycl -ffast-math -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-unknown-pragmas -Wno-unused-local-typedef ")
 set(DEF_NVIDIA_GENERAL_CXX_FLAGS " -O3 -std=c++17 -fsycl -ffast-math -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-unknown-pragmas -Wno-unused-local-typedef ")
 set(DEF_AMD_GENERAL_CXX_FLAGS    " -O3 -std=c++17 -fsycl -ffast-math -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-unknown-pragmas -Wno-unused-local-typedef ")
+set(ADAPTIVECPP_FLAGS            " -O3 --acpp-targets=omp.accelerated ")
 
 # -DCMAKE_CXX_FLAGS=" -blah -blah " overrides the default flags (BOTH general and WL specific)
 # -DOVERRIDE_GENERAL_CXX_FLAGS=" -blah -blah " overrides the general flags only (and not the workload specific flags)
@@ -107,6 +109,8 @@ elseif(USE_AMDHIP_BACKEND)
     string(APPEND CMAKE_CXX_FLAGS " -DUSE_AMDHIP_BACKEND")
 elseif (USE_NATIVE_CPU)
     string(APPEND CMAKE_CXX_FLAGS " -O3 -fsycl -fsycl-targets=native_cpu -march=native ")
+elseif(USE_ADAPTIVECPP)
+  string(APPEND CMAKE_CXX_FLAGS ${ADAPTIVECPP_FLAGS})
 else()
     # JIT case
     message(STATUS "Enabling INTEL backend")
@@ -147,7 +151,7 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/exe/main.dp.cpp
 )
 
-option(ONEDPLROOT "OneDPL install folder" "")
+set(ONEDPLROOT "" CACHE PATH "OneDPL install folder")
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/
     ${CMAKE_SOURCE_DIR}/src/include

@@ -38,6 +38,7 @@
  */
 
 #include <sycl/sycl.hpp>
+#include <complex>
 #include "include/utils/debug_utils.h"
 
 template <typename T>

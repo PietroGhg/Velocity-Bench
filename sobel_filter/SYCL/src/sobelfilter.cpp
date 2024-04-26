@@ -66,10 +66,10 @@ using namespace cv;
 using namespace std;
 
 double get_kernel_time(sycl::event& e) {
-    cl_ulong time_start =
+    auto time_start =
         e.get_profiling_info<sycl::info::event_profiling::command_start>();
 
-    cl_ulong time_end =
+    auto time_end =
         e.get_profiling_info<sycl::info::event_profiling::command_end>();
 
     double elapsed = (time_end - time_start)/1e6;
